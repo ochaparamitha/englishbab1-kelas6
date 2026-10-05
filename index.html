@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Fun Grade 6 - Vegetables & Expressing Likes</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand & Fredoka for playful SD look -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        heading: ['Fredoka', 'cursive']
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#4392F1',
+                            green: '#4EAE4A',
+                            yellow: '#FFC857',
+                            orange: '#FF8811',
+                            pink: '#FF6B8B',
+                            purple: '#8B5CF6',
+                            bg: '#F0F7FF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #F0F7FF;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', cursive;
+        }
+        .btn-bounce:active {
+            transform: scale(0.95);
+        }
+        .custom-shadow {
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.08);
+        }
+        .card-shadow {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E2E8F0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94A3B8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen pb-20 md:pb-6">
+
+    <!-- HEADER APLIKASI -->
+    <header class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white p-4 shadow-lg sticky top-0 z-30 rounded-b-3xl">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 bg-yellow-400 rounded-2xl flex items-center justify-center text-slate-800 font-heading font-bold text-xl shadow-md transform -rotate-3">
+                    🥕
+                </div>
+                <div>
+                    <h1 class="font-heading text-lg md:text-2xl font-bold leading-tight">English Fun SD</h1>
+                    <p class="text-xs text-blue-100 font-medium">Kelas 6 • Vegetables & Expressing Likes</p>
+                </div>
+            </div>
+            
+            <!-- Status Sesi Siswa / Guru -->
+            <div id="user-badge" class="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 border border-white/30">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="user-display-name">Siswa SD</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- LOCK BANNER WARNING (Tampil jika sedang ulangan) -->
+    <div id="quiz-active-banner" class="hidden bg-amber-500 text-white text-xs md:text-sm font-semibold px-4 py-2 text-center shadow-inner flex items-center justify-center gap-2 animate-bounce">
+        <i class="fa-solid fa-lock"></i>
+        <span>Sesi Ulangan Sedang Aktif! Navigasi Materi Ditutup Sementara.</span>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto w-full px-4 pt-4 flex-1">
+
+        <!-- BOTTOM / TOP TAB NAVIGATION -->
+        <nav class="bg-white p-2 rounded-2xl card-shadow mb-6 border-2 border-blue-100 flex justify-around items-center gap-1">
+            <button onclick="switchTab('materi')" id="tab-btn-materi" class="nav-tab flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold flex flex-col md:flex-row items-center justify-center gap-1.5 transition-all text-blue-600 bg-blue-50 border-2 border-blue-200">
+                <i class="fa-solid fa-book-open text-base"></i>
+                <span>Materi</span>
+            </button>
+            <button onclick="switchTab('kamus')" id="tab-btn-kamus" class="nav-tab flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold flex flex-col md:flex-row items-center justify-center gap-1.5 transition-all text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-spell-check text-base"></i>
+                <span>Kamus Mini</span>
+            </button>
+            <button onclick="switchTab('ulangan')" id="tab-btn-ulangan" class="nav-tab flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold flex flex-col md:flex-row items-center justify-center gap-1.5 transition-all text-slate-600 hover:bg-slate-50 relative">
+                <i class="fa-solid fa-pen-to-square text-base"></i>
+                <span>Ulangan Bab</span>
+                <span id="quiz-status-dot" class="hidden absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+            </button>
+            <button onclick="switchTab('guru')" id="tab-btn-guru" class="nav-tab flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold flex flex-col md:flex-row items-center justify-center gap-1.5 transition-all text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-user-tie text-base"></i>
+                <span>Portal Guru</span>
+            </button>
+        </nav>
+
+        <!-- SECTION 1: MODUL MATERI PEMBELAJARAN -->
+        <section id="sec-materi" class="tab-content space-y-6">
+            <!-- Header Card -->
+            <div class="bg-gradient-to-r from-emerald-400 to-teal-500 rounded-3xl p-5 text-white card-shadow relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/30">Ringkasan Materi PJJ</span>
+                    <h2 class="text-xl md:text-3xl font-heading font-bold mt-2">Vegetables & Expressing Likes</h2>
+                    <p class="text-emerald-50 text-xs md:text-sm mt-1 max-w-xl">Pelajari kosakata nama-nama sayuran, ciri-cirinya, serta aturan kalimat suka (like/likes) dan tidak suka (don't/doesn't like).</p>
+                </div>
+                <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 select-none">🥦</div>
+            </div>
+
+            <!-- Sub-Materi 1: Aturan Grammar Like & Likes -->
+            <div class="bg-white rounded-3xl p-5 card-shadow border-2 border-emerald-100">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg font-bold">1</div>
+                    <div>
+                        <h3 class="font-heading text-lg font-bold text-slate-800">Aturan Like, Likes, Don't Like, & Doesn't Like</h3>
+                        <p class="text-xs text-slate-500">Digunakan untuk mengungkapkan perasaan suka atau tidak suka terhadap sayuran.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Positive Rules -->
+                    <div class="bg-blue-50/70 border-2 border-blue-200 rounded-2xl p-4">
+                        <h4 class="font-heading text-blue-800 font-bold text-sm mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-thumbs-up text-blue-500"></i> Kalimat Suka (Positive)
+                        </h4>
+                        <ul class="space-y-2 text-xs md:text-sm">
+                            <li class="bg-white p-2.5 rounded-xl shadow-sm border border-blue-100">
+                                <span class="font-bold text-blue-600">I, You, We, They</span> ➜ gunakan <strong class="text-emerald-600">LIKE</strong>
+                                <div class="text-slate-500 text-xs mt-0.5">Contoh: <i>I <u>like</u> carrots. / We <u>like</u> cucumbers.</i></div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded-xl shadow-sm border border-blue-100">
+                                <span class="font-bold text-blue-600">He, She, It</span> ➜ gunakan <strong class="text-emerald-600">LIKES</strong> (tambah -s)
+                                <div class="text-slate-500 text-xs mt-0.5">Contoh: <i>She <u>likes</u> spinach. / He <u>likes</u> tomatoes.</i></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Negative Rules -->
+                    <div class="bg-rose-50/70 border-2 border-rose-200 rounded-2xl p-4">
+                        <h4 class="font-heading text-rose-800 font-bold text-sm mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-thumbs-down text-rose-500"></i> Kalimat Tidak Suka (Negative)
+                        </h4>
+                        <ul class="space-y-2 text-xs md:text-sm">
+                            <li class="bg-white p-2.5 rounded-xl shadow-sm border border-rose-100">
+                                <span class="font-bold text-rose-600">I, You, We, They</span> ➜ gunakan <strong class="text-rose-600">DON'T LIKE</strong>
+                                <div class="text-slate-500 text-xs mt-0.5">Contoh: <i>I <u>don't like</u> cucumbers.</i></div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded-xl shadow-sm border border-rose-100">
+                                <span class="font-bold text-rose-600">He, She, It</span> ➜ gunakan <strong class="text-rose-600">DOESN'T LIKE</strong>
+                                <div class="text-slate-500 text-xs mt-0.5">Contoh: <i>He <u>doesn't like</u> broccoli.</i></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Aturan Nama Orang -->
+                <div class="mt-4 p-3.5 bg-amber-50 border-2 border-amber-200 rounded-2xl text-xs md:text-sm">
+                    <div class="font-bold text-amber-800 mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb text-amber-500 text-base"></i> Aturan Penting Penggunaan Nama Orang:
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 pl-1">
+                        <li><strong>Satu Orang (misal: Rina / Budi)</strong> ➜ Dianggap sama seperti <i>He/She</i> (Gunakan <b>likes</b> / <b>doesn't like</b>). <br><span class="text-slate-500 text-xs pl-4 block">Contoh: <i>Rina <u>likes</u> spinach. / Budi <u>doesn't like</u> broccoli.</i></span></li>
+                        <li><strong>Lebih Dari Satu Orang (misal: Rina and Budi)</strong> ➜ Dianggap sama seperti <i>They</i> (Gunakan <b>like</b> / <b>don't like</b>). <br><span class="text-slate-500 text-xs pl-4 block">Contoh: <i>Rina and Budi <u>like</u> tomatoes. / Rina and Budi <u>don't like</u> onions.</i></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sub-Materi 2: Describing Vegetables -->
+            <div class="bg-white rounded-3xl p-5 card-shadow border-2 border-indigo-100">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">2</div>
+                    <div>
+                        <h3 class="font-heading text-lg font-bold text-slate-800">Describing Vegetables (Mendeskripsikan Sayuran)</h3>
+                        <p class="text-xs text-slate-500">Karakteristik tekstur, warna, bentuk, dan ciri umum sayuran.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs md:text-sm">
+                    <div class="p-3 bg-purple-50 rounded-2xl border border-purple-100">
+                        <span class="font-bold text-purple-700 block mb-1 font-heading">Tekstur (Texture)</span>
+                        <ul class="text-slate-600 space-y-0.5">
+                            <li>• Hard (Keras)</li>
+                            <li>• Soft (Lembut)</li>
+                            <li>• Rough (Kasar)</li>
+                            <li>• Smooth (Halus)</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-2xl border border-blue-100">
+                        <span class="font-bold text-blue-700 block mb-1 font-heading">Ciri Umum</span>
+                        <ul class="text-slate-600 space-y-0.5">
+                            <li>• Crunchy (Renyah)</li>
+                            <li>• Leafy (Berdaun)</li>
+                            <li>• Seeded (Berbiji)</li>
+                            <li>• Starchy (Berpati)</li>
+                            <li>• Spicy (Pedas)</li>
+                            <li>• Layered (Berlapis)</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <span class="font-bold text-emerald-700 block mb-1 font-heading">Warna (Color)</span>
+                        <ul class="text-slate-600 space-y-0.5">
+                            <li>• Orange, Green</li>
+                            <li>• Purple, Yellow</li>
+                            <li>• Brown, Red</li>
+                            <li>• White</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 bg-amber-50 rounded-2xl border border-amber-100">
+                        <span class="font-bold text-amber-700 block mb-1 font-heading">Bentuk (Shape)</span>
+                        <ul class="text-slate-600 space-y-0.5">
+                            <li>• Long (Panjang)</li>
+                            <li>• Round (Bulat)</li>
+                            <li>• Tree-like (Pohon)</li>
+                            <li>• Curly (Keriting)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: KAMUS MINI / VOCABULARY LIST -->
+        <section id="sec-kamus" class="tab-content hidden space-y-4">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-5 text-white card-shadow">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-heading font-bold">Kamus Mini Vegetables 🥕</h2>
+                        <p class="text-xs text-purple-100">24 Daftar kata sayuran lengkap dengan ciri-ciri & suara pengucapan Bahasa Inggris!</p>
+                    </div>
+                    <!-- Search Input -->
+                    <div class="relative w-full md:w-64">
+                        <input type="text" id="vocab-search" oninput="filterVocab()" placeholder="Cari nama sayuran..." class="w-full pl-9 pr-4 py-2 rounded-2xl bg-white/20 backdrop-blur-md text-white placeholder-purple-200 text-xs focus:outline-none focus:ring-2 focus:ring-yellow-300 border border-white/30">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-purple-200 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Kartu Kosakata -->
+            <div id="vocab-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <!-- Content generated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: MODUL ULANGAN BAB (QUIZ ENGINE) -->
+        <section id="sec-ulangan" class="tab-content hidden space-y-5">
+            
+            <!-- Modal Registrasi Siswa Sebelum Ulangan -->
+            <div id="quiz-start-modal" class="bg-white rounded-3xl p-6 card-shadow border-2 border-blue-200 text-center max-w-md mx-auto my-4">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+                    📝
+                </div>
+                <h3 class="font-heading text-xl font-bold text-slate-800">Mulai Ulangan Harian Bab</h3>
+                <p class="text-xs text-slate-500 mt-1 mb-4">Isi identitas diri terlebih dahulu untuk memulai pengerjaan 20 soal ulangan.</p>
+                
+                <form onsubmit="startQuizSession(event)" class="space-y-3 text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa:</label>
+                        <input type="text" id="student-name-input" required placeholder="Contoh: Ahmad Fauzi" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Kelas / Nomor Absen:</label>
+                        <input type="text" id="student-class-input" required placeholder="Contoh: 6A / 05" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm">
+                    </div>
+
+                    <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-800 space-y-1">
+                        <div class="font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Ketentuan Ulangan:
+                        </div>
+                        <p>1. Total 20 Soal (10 PG, 5 Isian, 5 Benar/Salah). Total nilai maks: 100.</p>
+                        <p>2. Modul Materi & Kamus akan **DIKUNCI** sampai selesai mengumpulkan.</p>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-heading font-bold text-base rounded-xl shadow-lg border-b-4 border-emerald-700 btn-bounce mt-2 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Mulai Ulangan Sekarang
+                    </button>
+                </form>
+            </div>
+
+            <!-- Quiz Panel Container (Hidden default until quiz started) -->
+            <div id="quiz-active-panel" class="hidden space-y-4">
+                
+                <!-- Quiz Progress Bar Header -->
+                <div class="bg-white rounded-2xl p-4 card-shadow border border-blue-100 flex flex-col md:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 font-bold flex items-center justify-center font-heading" id="quiz-num-badge">
+                            1/20
+                        </div>
+                        <div>
+                            <span id="quiz-part-label" class="text-xs font-bold text-blue-600 uppercase tracking-wide">BAGIAN A: PILIHAN GANDA</span>
+                            <div class="text-xs text-slate-500 font-medium" id="quiz-diff-label">Tingkat: Mudah (4 Poin)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full md:w-48 bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200">
+                        <div id="quiz-progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full w-[5%] transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Card Question Wrapper -->
+                <div id="quiz-question-container" class="bg-white rounded-3xl p-5 md:p-6 card-shadow border-2 border-indigo-100 min-h-[280px] flex flex-col justify-between">
+                    <!-- Dynamic Question Area -->
+                </div>
+
+                <!-- Quiz Bottom Nav Buttons -->
+                <div class="flex items-center justify-between gap-2">
+                    <button onclick="prevQuestion()" id="btn-prev-q" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs md:text-sm font-bold flex items-center gap-1.5 btn-bounce disabled:opacity-40">
+                        <i class="fa-solid fa-arrow-left"></i> Sebelum
+                    </button>
+                    
+                    <button onclick="nextQuestion()" id="btn-next-q" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold flex items-center gap-1.5 shadow-md btn-bounce">
+                        Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <button onclick="confirmSubmitQuiz()" id="btn-submit-q" class="hidden px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs md:text-sm font-bold flex items-center gap-1.5 shadow-md btn-bounce animate-pulse">
+                        <i class="fa-solid fa-check-double"></i> Kumpulkan Ulangan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result & Score Card Panel (Hidden default) -->
+            <div id="quiz-result-panel" class="hidden space-y-5">
+                <div class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-6 text-white text-center card-shadow relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div id="result-badge-icon" class="text-5xl mb-2 animate-bounce">🏆</div>
+                        <h2 class="text-2xl md:text-3xl font-heading font-bold">Hasil Ulangan Harian</h2>
+                        <p class="text-purple-100 text-xs md:text-sm" id="result-student-info">Ahmad Fauzi - Kelas 6A</p>
+
+                        <!-- Big Score Circle -->
+                        <div class="w-32 h-32 my-4 rounded-full bg-white text-slate-800 flex flex-col items-center justify-center mx-auto shadow-2xl border-4 border-yellow-400">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">NILAI</span>
+                            <span id="result-score-num" class="text-4xl font-heading font-bold text-blue-600">85</span>
+                            <span class="text-[10px] text-slate-500">dari 100</span>
+                        </div>
+
+                        <!-- Stars & Motivational Message -->
+                        <div id="result-stars" class="text-2xl text-yellow-300 space-x-1 mb-2">★★★★★</div>
+                        <p id="result-feedback-text" class="text-sm md:text-base font-bold text-yellow-200 max-w-md mx-auto">Great Job! Hasil kerja kerasmu luar biasa!</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="togglePembahasanModal(true)" class="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm shadow-md flex items-center justify-center gap-2 btn-bounce">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i> Lihat Kunci & Pembahasan
+                    </button>
+                    <button onclick="restartQuiz()" class="flex-1 py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-bold text-sm shadow-md flex items-center justify-center gap-2 btn-bounce">
+                        <i class="fa-solid fa-rotate-right"></i> Ulangi Soal Ulangan
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PORTAL GURU (TEACHER DASHBOARD) -->
+        <section id="sec-guru" class="tab-content hidden space-y-4">
+            
+            <!-- Login PIN Guru Modal (Locked Default) -->
+            <div id="guru-login-card" class="bg-white rounded-3xl p-6 card-shadow border-2 border-indigo-100 text-center max-w-md mx-auto my-6">
+                <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3">
+                    🔐
+                </div>
+                <h3 class="font-heading text-xl font-bold text-slate-800">Akses Portal Guru</h3>
+                <p class="text-xs text-slate-500 mt-1 mb-4">Masukkan Kode PIN Guru untuk membuka Dashboard Rekapitulasi Nilai Siswa.</p>
+
+                <form onsubmit="verifyGuruPIN(event)" class="space-y-3">
+                    <div>
+                        <!-- Murni Tanpa Hint / Teks Kode PIN -->
+                        <input type="password" id="guru-pin-input" required placeholder="Masukkan Kode PIN Guru..." class="w-full text-center px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-lg tracking-widest font-bold">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-md btn-bounce">
+                        Buka Dashboard
+                    </button>
+                </form>
+            </div>
+
+            <!-- Dashboard Guru (Visible after correct PIN) -->
+            <div id="guru-dashboard-panel" class="hidden space-y-4">
+                
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-white p-4 rounded-2xl card-shadow border-l-4 border-blue-500">
+                        <div class="text-xs font-bold text-slate-400">Total Siswa Ujian</div>
+                        <div id="stat-total-siswa" class="text-2xl font-heading font-bold text-slate-800">0</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl card-shadow border-l-4 border-emerald-500">
+                        <div class="text-xs font-bold text-slate-400">Rata-Rata Nilai</div>
+                        <div id="stat-rata-nilai" class="text-2xl font-heading font-bold text-emerald-600">0</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl card-shadow border-l-4 border-amber-500">
+                        <div class="text-xs font-bold text-slate-400">Nilai Tertinggi</div>
+                        <div id="stat-max-nilai" class="text-2xl font-heading font-bold text-amber-600">0</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl card-shadow border-l-4 border-rose-500">
+                        <div class="text-xs font-bold text-slate-400">Nilai Terendah</div>
+                        <div id="stat-min-nilai" class="text-2xl font-heading font-bold text-rose-600">0</div>
+                    </div>
+                </div>
+
+                <!-- Action Toolbar & Cloud Sync Config -->
+                <div class="bg-white p-4 rounded-2xl card-shadow flex flex-col md:flex-row justify-between items-center gap-3">
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <button onclick="refreshCloudData()" class="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate"></i> Refresh Data
+                        </button>
+                        <button onclick="exportToCSV()" class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-excel"></i> Ekspor CSV
+                        </button>
+                        <button onclick="openCloudConfigModal()" class="px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-600 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud"></i> Setting Cloud
+                        </button>
+                    </div>
+
+                    <button onclick="clearAllRekap()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold flex items-center gap-1.5 self-end md:self-auto">
+                        <i class="fa-solid fa-trash-can"></i> Hapus Rekap
+                    </button>
+                </div>
+
+                <!-- Tabel Rekapitulasi Nilai Siswa -->
+                <div class="bg-white rounded-2xl card-shadow overflow-hidden border border-slate-200">
+                    <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+                        <h4 class="font-heading font-bold text-slate-800 text-base">Rekapitulasi Nilai Siswa</h4>
+                        <span id="cloud-status-indicator" class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium">Cloud Active</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm">
+                            <thead class="bg-slate-50 text-slate-500 uppercase font-bold text-[11px]">
+                                <tr>
+                                    <th class="p-3">No</th>
+                                    <th class="p-3">Nama Siswa</th>
+                                    <th class="p-3">Kelas / Absen</th>
+                                    <th class="p-3 text-center">Nilai Akhir</th>
+                                    <th class="p-3">Waktu Pengerjaan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guru-rekap-tbody" class="divide-y divide-slate-100 text-slate-700">
+                                <!-- Generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL WARNING TERKUNCI -->
+    <div id="modal-lock-warning" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 text-center max-w-sm w-full card-shadow animate-bounce">
+            <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-3">
+                🔒
+            </div>
+            <h3 class="font-heading text-lg font-bold text-slate-800">Materi Dikunci!</h3>
+            <p class="text-xs text-slate-600 mt-2">Materi dikunci selama ulangan berlangsung! Selesaikan dan kumpulkan ulangan terlebih dahulu.</p>
+            <button onclick="closeLockModal()" class="mt-4 w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs btn-bounce">
+                Saya Mengerti, Kembali ke Soal
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL PEMBAHASAN / KUNCI JAWABAN -->
+    <div id="modal-pembahasan" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-5 md:p-6 max-w-2xl w-full max-h-[85vh] flex flex-col card-shadow">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="font-heading text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-indigo-600"></i> Kunci Jawaban & Pembahasan
+                </h3>
+                <button onclick="togglePembahasanModal(false)" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div id="pembahasan-content-list" class="overflow-y-auto py-4 space-y-3 flex-1 pr-1">
+                <!-- Generated dynamically by JS -->
+            </div>
+
+            <div class="pt-3 border-t border-slate-100">
+                <button onclick="togglePembahasanModal(false)" class="w-full py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold btn-bounce">
+                    Tutup Pembahasan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SETTING CLOUD URL -->
+    <div id="modal-cloud-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full card-shadow">
+            <h3 class="font-heading text-lg font-bold text-slate-800 mb-2">Pengaturan Database Cloud</h3>
+            <p class="text-xs text-slate-500 mb-4">Masukkan Webhook URL Google Apps Script atau Firebase REST API Anda untuk sinkronisasi nilai otomatis.</p>
+            
+            <div class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">URL Webhook / Database API:</label>
+                    <input type="text" id="cloud-url-input" placeholder="https://script.google.com/macros/s/..." class="w-full p-2.5 border-2 border-slate-200 rounded-xl text-xs focus:border-indigo-500 focus:outline-none">
+                </div>
+                <div class="p-3 bg-blue-50 rounded-xl text-[11px] text-blue-700">
+                    <i class="fa-solid fa-circle-info"></i> Jika dikosongkan, data rekap nilai akan tersimpan di browser perangkat lokal ini (LocalStorage).
+                </div>
+            </div>
+
+            <div class="flex gap-2 mt-4">
+                <button onclick="saveCloudConfig()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs btn-bounce">
+                    Simpan Konfigurasi
+                </button>
+                <button onclick="closeCloudConfigModal()" class="py-2.5 px-4 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs btn-bounce">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           DATA SCRIPT: KOSAKATA 24 SAYURAN (100% DARI DOKUMEN MATERI)
+           ========================================================================== */
+        const vegetableData = [
+            { id: 1, en: "Carrot", idn: "Wortel", texture: "Hard (Keras)", char: "Crunchy (Renyah)", color: "Orange", shape: "Long (Panjang)", cat: "basic" },
+            { id: 2, en: "Broccoli", idn: "Brokoli", texture: "Rough (Kasar)", char: "Fresh (Segar)", color: "Green", shape: "Tree-like (Pohon)", cat: "basic" },
+            { id: 3, en: "Spinach", idn: "Bayam", texture: "Soft (Lembut)", char: "Leafy (Berdaun)", color: "Green", shape: "Leafy (Daun)", cat: "basic" },
+            { id: 4, en: "Cabbage", idn: "Kubis", texture: "Hard (Keras)", char: "Leafy (Berdaun)", color: "Green", shape: "Round (Bulat)", cat: "basic" },
+            { id: 5, en: "Cucumber", idn: "Timun", texture: "Smooth (Halus)", char: "Fresh (Segar)", color: "Green", shape: "Long (Panjang)", cat: "basic" },
+            { id: 6, en: "Eggplant", idn: "Terong", texture: "Smooth (Halus)", char: "Fresh (Segar)", color: "Purple", shape: "Long (Panjang)", cat: "basic" },
+            { id: 7, en: "Corn", idn: "Jagung", texture: "Hard (Keras)", char: "Seeded (Berbiji)", color: "Yellow", shape: "Long (Panjang)", cat: "basic" },
+            { id: 8, en: "Potato", idn: "Kentang", texture: "Rough (Kasar)", char: "Starchy (Berpati)", color: "Brown", shape: "Round (Bulat)", cat: "basic" },
+            { id: 9, en: "Tomato", idn: "Tomat", texture: "Soft (Lembut)", char: "Juicy (Berair)", color: "Red", shape: "Round (Bulat)", cat: "basic" },
+            { id: 10, en: "Chili", idn: "Cabai", texture: "Smooth (Halus)", char: "Spicy (Pedas)", color: "Red", shape: "Long (Panjang)", cat: "basic" },
+            { id: 11, en: "Cauliflower", idn: "Kembang kol", texture: "Rough (Kasar)", char: "Fresh (Segar)", color: "White", shape: "Round (Bulat)", cat: "basic" },
+            { id: 12, en: "Lettuce", idn: "Selada", texture: "Soft (Lembut)", char: "Leafy (Berdaun)", color: "Green", shape: "Curly (Keriting)", cat: "basic" },
+            
+            // Vegetables 13 - 24
+            { id: 13, en: "Long bean", idn: "Kacang panjang", texture: "Smooth (Halus)", char: "Fresh (Segar)", color: "Green", shape: "Long (Panjang)", cat: "more" },
+            { id: 14, en: "Pumpkin", idn: "Labu", texture: "Hard (Keras)", char: "Seeded (Berbiji)", color: "Orange", shape: "Round (Bulat)", cat: "more" },
+            { id: 15, en: "Onion", idn: "Bawang bombai", texture: "Smooth (Halus)", char: "Layered (Berlapis)", color: "Brown", shape: "Round (Bulat)", cat: "more" },
+            { id: 16, en: "Garlic", idn: "Bawang putih", texture: "Hard (Keras)", char: "Layered (Berlapis)", color: "White", shape: "Round (Bulat)", cat: "more" },
+            { id: 17, en: "Green bean", idn: "Buncis", texture: "Smooth (Halus)", char: "Seeded (Berbiji)", color: "Green", shape: "Long (Panjang)", cat: "more" },
+            { id: 18, en: "Mustard greens", idn: "Sawi", texture: "Soft (Lembut)", char: "Leafy (Berdaun)", color: "Green", shape: "Leafy (Daun)", cat: "more" },
+            { id: 19, en: "Celery", idn: "Seledri", texture: "Crunchy (Renyah)", char: "Leafy (Berdaun)", color: "Green", shape: "Long (Panjang)", cat: "more" },
+            { id: 20, en: "Mushroom", idn: "Jamur", texture: "Soft (Lembut)", char: "Fresh (Segar)", color: "Brown", shape: "Round (Bulat)", cat: "more" },
+            { id: 21, en: "Bean sprout", idn: "Tauge", texture: "Soft (Lembut)", char: "Fresh (Segar)", color: "White", shape: "Long (Panjang)", cat: "more" },
+            { id: 22, en: "Sweet potato", idn: "Ubi jalar", texture: "Hard (Keras)", char: "Starchy (Berpati)", color: "Purple", shape: "Long (Panjang)", cat: "more" },
+            { id: 23, en: "Cassava leaf", idn: "Daun singkong", texture: "Soft (Lembut)", char: "Leafy (Berdaun)", color: "Green", shape: "Leafy (Daun)", cat: "more" },
+            { id: 24, en: "Bitter melon", idn: "Pare", texture: "Rough (Kasar)", char: "Seeded (Berbiji)", color: "Green", shape: "Long (Panjang)", cat: "more" }
+        ];
+
+        /* ==========================================================================
+           20 SOAL ULANGAN BAB BERKUALITAS (Murni Berdasarkan Materi Vegetables & Grammar)
+           Proporsi Nilai Sempurna = 100 Poin
+           - Easy (8 soal @ 4 poin = 32 poin)
+           - Medium (8 soal @ 5 poin = 40 poin)
+           - Hard / HOTS (4 soal @ 7 poin = 28 poin)
+           ========================================================================== */
+        const quizQuestions = [
+            // --- BAGIAN A: 10 SOAL PILIHAN GANDA (MC) ---
+            {
+                id: 1,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Easy",
+                points: 4,
+                question: "Apa arti dari kata sayuran 'Broccoli' dalam Bahasa Indonesia?",
+                options: ["Brokoli", "Bayam", "Kubis", "Buncis"],
+                answer: 0, // A
+                explain: "Broccoli dalam Bahasa Indonesia berarti Brokoli."
+            },
+            {
+                id: 2,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Easy",
+                points: 4,
+                question: "Bahasa Inggris dari 'Kembang kol' adalah...",
+                options: ["Cabbage", "Lettuce", "Cauliflower", "Celery"],
+                answer: 2, // C
+                explain: "Kembang kol dalam Bahasa Inggris dinamakan Cauliflower."
+            },
+            {
+                id: 3,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Easy",
+                points: 4,
+                question: "Berdasarkan tabel materi, tekstur (texture) dari Wortel (Carrot) adalah...",
+                options: ["Soft (Lembut)", "Hard (Keras)", "Rough (Kasar)", "Smooth (Halus)"],
+                answer: 1, // B
+                explain: "Wortel (Carrot) memiliki tekstur yang keras (Hard)."
+            },
+            {
+                id: 4,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Easy",
+                points: 4,
+                question: "Manakah pilihan berikut yang merupakan Bahasa Inggris dari sayur 'Sawi'?",
+                options: ["Cassava leaf", "Celery", "Mustard greens", "Bean sprout"],
+                answer: 2, // C
+                explain: "Sawi dalam Bahasa Inggris adalah Mustard greens."
+            },
+            {
+                id: 5,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Easy",
+                points: 4,
+                question: "Warna (color) dari sayuran 'Pumpkin' (Labu) pada tabel materi adalah...",
+                options: ["Orange", "Green", "Yellow", "Purple"],
+                answer: 0, // A
+                explain: "Pumpkin (Labu) berwarna Oranye (Orange)."
+            },
+            {
+                id: 6,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Medium",
+                points: 5,
+                question: "Isilah titik-titik berikut: 'She _____ spinach because it is healthy.'",
+                options: ["like", "don't like", "likes", "doesn't likes"],
+                answer: 2, // C
+                explain: "Subjek 'She' membutuhkan kata kerja 'likes' (mendapat akhiran -s)."
+            },
+            {
+                id: 7,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Medium",
+                points: 5,
+                question: "Bentuk (shape) dari Brokoli berdasarkan tabel deskripsi adalah...",
+                options: ["Tree-like (Seperti pohon)", "Round (Bulat)", "Long (Panjang)", "Curly (Keriting)"],
+                answer: 0, // A
+                explain: "Brokoli memiliki bentuk menyerupai pohon kecil (Tree-like)."
+            },
+            {
+                id: 8,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Medium",
+                points: 5,
+                question: "Lengkapi kalimat negatif berikut: 'They _____ bitter melon because it tastes bitter.'",
+                options: ["doesn't like", "don't like", "likes", "not like"],
+                answer: 1, // B
+                explain: "Subjek 'They' menggunakan 'don't like' untuk menyatakan tidak suka."
+            },
+            {
+                id: 9,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Hard/HOTS",
+                points: 7,
+                question: "Perhatikan kalimat ini: 'Rina and Budi _____ tomatoes.' Kata yang paling tepat untuk mengisi kalimat tersebut adalah...",
+                options: ["likes", "doesn't like", "like", "liking"],
+                answer: 2, // C
+                explain: "Karena 'Rina and Budi' lebih dari satu orang (jamak / seperti They), maka kata kerja yang benar adalah 'like'."
+            },
+            {
+                id: 10,
+                part: "Bagian A: Pilihan Ganda",
+                type: "mc",
+                diff: "Hard/HOTS",
+                points: 7,
+                question: "Mother buys potatoes at the market. Based on the table, what are the texture and shape of a potato?",
+                options: [
+                    "Smooth (Halus) and Long (Panjang)",
+                    "Rough (Kasar) and Round (Bulat)",
+                    "Soft (Lembut) and Tree-like (Pohon)",
+                    "Hard (Keras) and Curly (Keriting)"
+                ],
+                answer: 1, // B
+                explain: "Berdasarkan tabel deskripsi, kentang (potato) memiliki tekstur kasar (Rough) dan berbentuk bulat (Round)."
+            },
+
+            // --- BAGIAN B: 5 SOAL ISIAN SINGKAT (SHORT ANSWER) ---
+            {
+                id: 11,
+                part: "Bagian B: Isian Singkat",
+                type: "short",
+                diff: "Medium",
+                points: 5,
+                question: "Tuliskan Bahasa Inggris dari sayuran 'Terong'!",
+                acceptAnswers: ["eggplant", "an eggplant"],
+                explain: "Terong dalam Bahasa Inggris adalah 'Eggplant'."
+            },
+            {
+                id: 12,
+                part: "Bagian B: Isian Singkat",
+                type: "short",
+                diff: "Medium",
+                points: 5,
+                question: "Lengkapi kalimat: 'I _____ carrots.' (Saya suka wortel). Ketikkan kata Bahasa Inggrisnya!",
+                acceptAnswers: ["like"],
+                explain: "Subjek 'I' menggunakan kata 'like' untuk menyatakan suka."
+            },
+            {
+                id: 13,
+                part: "Bagian B: Isian Singkat",
+                type: "short",
+                diff: "Medium",
+                points: 5,
+                question: "Apakah karakteristik umum (General Characteristic) dari Cabai (Chili) dalam Bahasa Inggris?",
+                acceptAnswers: ["spicy"],
+                explain: "Cabai (Chili) memiliki karakteristik rasa pedas (Spicy)."
+            },
+            {
+                id: 14,
+                part: "Bagian B: Isian Singkat",
+                type: "short",
+                diff: "Hard/HOTS",
+                points: 7,
+                question: "Isi titik-titik dengan kata tidak suka yang tepat: 'He _____ like broccoli.'",
+                acceptAnswers: ["doesn't", "doesnt", "does not"],
+                explain: "Subjek 'He' menggunakan 'doesn't' (does not) untuk kalimat negatif."
+            },
+            {
+                id: 15,
+                part: "Bagian B: Isian Singkat",
+                type: "short",
+                diff: "Hard/HOTS",
+                points: 7,
+                question: "Read the sentence: 'Siti loves green vegetables. She _____ (suka) spinach and mustard greens.' Write the correct English word!",
+                acceptAnswers: ["likes"],
+                explain: "Karena subjeknya 'She' (Siti), maka kata kerja suka yang tepat dalam Bahasa Inggris adalah 'likes'."
+            },
+
+            // --- BAGIAN C: 5 SOAL BENAR / SALAH (TRUE / FALSE) ---
+            {
+                id: 16,
+                part: "Bagian C: Benar / Salah",
+                type: "tf",
+                diff: "Easy",
+                points: 4,
+                question: "Bayam (Spinach) memiliki tekstur yang lembut (Soft) dan berwarna hijau (Green).",
+                answer: true,
+                explain: "Pernyataan BENAR. Bayam memiliki tekstur soft dan berwarna green."
+            },
+            {
+                id: 17,
+                part: "Bagian C: Benar / Salah",
+                type: "tf",
+                diff: "Easy",
+                points: 4,
+                question: "'Bitter melon' dalam Bahasa Indonesia berarti 'Buncis'.",
+                answer: false,
+                explain: "Pernyataan SALAH. Bitter melon berarti Pare. Buncis adalah Green bean."
+            },
+            {
+                id: 18,
+                part: "Bagian C: Benar / Salah",
+                type: "tf",
+                diff: "Easy",
+                points: 4,
+                question: "Subjek He, She, dan It menggunakan 'don't like' untuk kalimat tidak suka.",
+                answer: false,
+                explain: "Pernyataan SALAH. Subjek He, She, It menggunakan 'doesn't like'."
+            },
+            {
+                id: 19,
+                part: "Bagian C: Benar / Salah",
+                type: "tf",
+                diff: "Medium",
+                points: 5,
+                question: "Bawang putih (Garlic) dan Bawang bombai (Onion) sama-sama memiliki karakteristik umum berlapis (Layered).",
+                answer: true,
+                explain: "Pernyataan BENAR. Garlic dan Onion tergolong sayuran berlapis (Layered)."
+            },
+            {
+                id: 20,
+                part: "Bagian C: Benar / Salah",
+                type: "tf",
+                diff: "Medium",
+                points: 5,
+                question: "'Cassava leaf' berarti Daun Singkong dan memiliki ciri-ciri berdaun (Leafy).",
+                answer: true,
+                explain: "Pernyataan BENAR. Cassava leaf adalah daun singkong dengan karakteristik Leafy."
+            }
+        ];
+
+        /* ==========================================================================
+           STATE APLIKASI & INTERAKSI
+           ========================================================================== */
+        let currentTab = 'materi';
+        let isQuizActive = false;
+        let currentQuestionIdx = 0;
+        let userAnswers = {}; // { qId: answer }
+        let studentProfile = { name: "", classNum: "" };
+        let cloudDatabaseUrl = localStorage.getItem('english_app_cloud_url') || "";
+
+        // Web Audio API Synthesizer (Efek Suara Tanpa File Eksternal)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'finish') {
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(audioCtx.destination);
+                    osc2.frequency.setValueAtTime(freq, now + (i * 0.1));
+                    gain2.gain.setValueAtTime(0.2, now + (i * 0.1));
+                    gain2.gain.exponentialRampToValueAtTime(0.01, now + (i * 0.1) + 0.3);
+                    osc2.start(now + (i * 0.1));
+                    osc2.stop(now + (i * 0.1) + 0.3);
+                });
+            } else if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+        }
+
+        function switchTab(tabId) {
+            playSound('click');
+            
+            // KUNCI PROTEKSI ULANGAN: Jika ulangan aktif dan siswa mencoba keluar dari tab ulangan
+            if (isQuizActive && tabId !== 'ulangan') {
+                playSound('wrong');
+                document.getElementById('modal-lock-warning').classList.remove('hidden');
+                return;
+            }
+
+            currentTab = tabId;
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.remove('text-blue-600', 'bg-blue-50', 'border-2', 'border-blue-200');
+                el.classList.add('text-slate-600');
+            });
+
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-blue-600', 'bg-blue-50', 'border-2', 'border-blue-200');
+                activeBtn.classList.remove('text-slate-600');
+            }
+        }
+
+        function closeLockModal() {
+            playSound('click');
+            document.getElementById('modal-lock-warning').classList.add('hidden');
+        }
+
+        function speakEnglish(text) {
+            playSound('click');
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Browser tidak mendukung sintesis suara pelafalan.");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderVocabCards(vegetableData);
+            loadRekapTable();
+        });
+
+        function renderVocabCards(data) {
+            const grid = document.getElementById('vocab-grid');
+            grid.innerHTML = "";
+
+            if (data.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-xs">Kosakata tidak ditemukan...</div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3.5 rounded-2xl card-shadow border border-slate-100 flex flex-col justify-between hover:border-purple-300 transition-all";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">#${item.id}</span>
+                            <button onclick="speakEnglish('${item.en}')" title="Dengarkan Suara" class="w-7 h-7 rounded-full bg-purple-50 text-purple-600 hover:bg-purple-600 hover:text-white flex items-center justify-center text-xs btn-bounce transition-colors">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        <h4 class="font-heading font-bold text-slate-800 text-sm md:text-base leading-tight">${item.en}</h4>
+                        <p class="text-xs text-emerald-600 font-semibold mb-2">${item.idn}</p>
+                    </div>
+
+                    <div class="space-y-1 text-[11px] bg-slate-50 p-2 rounded-xl border border-slate-100">
+                        <div class="text-slate-500"><strong>Tekstur:</strong> ${item.texture}</div>
+                        <div class="text-slate-500"><strong>Ciri:</strong> ${item.char}</div>
+                        <div class="text-slate-500"><strong>Warna/Bentuk:</strong> ${item.color} / ${item.shape}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterVocab() {
+            const q = document.getElementById('vocab-search').value.toLowerCase();
+            const filtered = vegetableData.filter(item => 
+                item.en.toLowerCase().includes(q) || item.idn.toLowerCase().includes(q)
+            );
+            renderVocabCards(filtered);
+        }
+
+        function startQuizSession(e) {
+            e.preventDefault();
+            playSound('click');
+
+            const name = document.getElementById('student-name-input').value.trim();
+            const classNum = document.getElementById('student-class-input').value.trim();
+
+            if (!name || !classNum) return;
+
+            studentProfile = { name, classNum };
+            document.getElementById('user-display-name').textContent = `${name} (${classNum})`;
+
+            isQuizActive = true;
+            userAnswers = {};
+            currentQuestionIdx = 0;
+
+            document.getElementById('quiz-active-banner').classList.remove('hidden');
+            document.getElementById('quiz-status-dot').classList.remove('hidden');
+            document.getElementById('quiz-start-modal').classList.add('hidden');
+            document.getElementById('quiz-active-panel').classList.remove('hidden');
+            document.getElementById('quiz-result-panel').classList.add('hidden');
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizQuestions[currentQuestionIdx];
+            const container = document.getElementById('quiz-question-container');
+            
+            document.getElementById('quiz-num-badge').textContent = `${currentQuestionIdx + 1}/20`;
+            document.getElementById('quiz-part-label').textContent = q.part;
+            document.getElementById('quiz-diff-label').textContent = `Tingkat: ${q.diff} (${q.points} Poin)`;
+            
+            const pct = ((currentQuestionIdx + 1) / 20) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+
+            let bodyHtml = `
+                <div>
+                    <div class="text-xs text-slate-400 font-bold uppercase mb-1">Soal Nomor ${currentQuestionIdx + 1}</div>
+                    <h3 class="font-heading text-base md:text-lg font-bold text-slate-800 mb-4 leading-snug">${q.question}</h3>
+                </div>
+            `;
+
+            if (q.type === 'mc') {
+                bodyHtml += `<div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 my-2">`;
+                const labels = ["A", "B", "C", "D"];
+                q.options.forEach((opt, idx) => {
+                    const isSelected = userAnswers[q.id] === idx;
+                    bodyHtml += `
+                        <button onclick="selectAnswer(${q.id}, ${idx})" class="p-3 rounded-2xl border-2 text-left font-semibold text-xs md:text-sm flex items-center gap-3 transition-all btn-bounce ${
+                            isSelected 
+                            ? 'border-blue-500 bg-blue-50 text-blue-800 shadow-md' 
+                            : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
+                        }">
+                            <span class="w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs ${
+                                isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'
+                            }">${labels[idx]}</span>
+                            <span>${opt}</span>
+                        </button>
+                    `;
+                });
+                bodyHtml += `</div>`;
+            } else if (q.type === 'short') {
+                const currentVal = userAnswers[q.id] || "";
+                bodyHtml += `
+                    <div class="my-3">
+                        <label class="block text-xs text-slate-500 mb-1 font-semibold">Ketikkan Jawaban Singkat Anda:</label>
+                        <input type="text" id="short-ans-input" value="${currentVal}" oninput="saveShortAnswer(${q.id}, this.value)" placeholder="Ketik jawaban dalam Bahasa Inggris..." class="w-full p-3.5 rounded-2xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none text-sm font-semibold text-slate-800 shadow-sm">
+                        <p class="text-[11px] text-slate-400 mt-1">*Sistem otomatis mengabaikan huruf besar/kecil dan spasi berlebih.</p>
+                    </div>
+                `;
+            } else if (q.type === 'tf') {
+                const isTrueSelected = userAnswers[q.id] === true;
+                const isFalseSelected = userAnswers[q.id] === false;
+
+                bodyHtml += `
+                    <div class="grid grid-cols-2 gap-3 my-3">
+                        <button onclick="selectAnswer(${q.id}, true)" class="p-4 rounded-2xl border-2 font-heading font-bold text-sm md:text-base flex flex-col items-center justify-center gap-1 transition-all btn-bounce ${
+                            isTrueSelected 
+                            ? 'border-emerald-500 bg-emerald-50 text-emerald-800 shadow-md' 
+                            : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'
+                        }">
+                            <span class="text-2xl">👍</span>
+                            <span>TRUE (BENAR)</span>
+                        </button>
+                        <button onclick="selectAnswer(${q.id}, false)" class="p-4 rounded-2xl border-2 font-heading font-bold text-sm md:text-base flex flex-col items-center justify-center gap-1 transition-all btn-bounce ${
+                            isFalseSelected 
+                            ? 'border-rose-500 bg-rose-50 text-rose-800 shadow-md' 
+                            : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'
+                        }">
+                            <span class="text-2xl">👎</span>
+                            <span>FALSE (SALAH)</span>
+                        </button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = bodyHtml;
+
+            document.getElementById('btn-prev-q').disabled = (currentQuestionIdx === 0);
+            
+            if (currentQuestionIdx === quizQuestions.length - 1) {
+                document.getElementById('btn-next-q').classList.add('hidden');
+                document.getElementById('btn-submit-q').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next-q').classList.remove('hidden');
+                document.getElementById('btn-submit-q').classList.add('hidden');
+            }
+        }
+
+        function selectAnswer(qId, val) {
+            playSound('click');
+            userAnswers[qId] = val;
+            renderQuestion();
+        }
+
+        function saveShortAnswer(qId, val) {
+            userAnswers[qId] = val;
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                playSound('click');
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < quizQuestions.length - 1) {
+                playSound('click');
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function confirmSubmitQuiz() {
+            playSound('click');
+            
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < 20) {
+                if (!confirm(`Anda baru menjawab ${answeredCount} dari 20 soal. Yakin ingin mengumpulkan sekarang?`)) {
+                    return;
+                }
+            }
+            
+            calculateAndFinishQuiz();
+        }
+
+        function calculateAndFinishQuiz() {
+            let totalScore = 0;
+
+            quizQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+
+                if (q.type === 'mc' || q.type === 'tf') {
+                    if (userAns === q.answer) {
+                        totalScore += q.points;
+                    }
+                } else if (q.type === 'short') {
+                    if (typeof userAns === 'string') {
+                        const cleanAns = userAns.trim().toLowerCase();
+                        const isCorrect = q.acceptAnswers.some(acc => acc.trim().toLowerCase() === cleanAns);
+                        if (isCorrect) {
+                            totalScore += q.points;
+                        }
+                    }
+                }
+            });
+
+            isQuizActive = false;
+            document.getElementById('quiz-active-banner').classList.add('hidden');
+            document.getElementById('quiz-status-dot').classList.add('hidden');
+
+            playSound('finish');
+
+            document.getElementById('quiz-active-panel').classList.add('hidden');
+            document.getElementById('quiz-result-panel').classList.remove('hidden');
+
+            document.getElementById('result-student-info').textContent = `${studentProfile.name} • ${studentProfile.classNum}`;
+            document.getElementById('result-score-num').textContent = totalScore;
+
+            let stars = "★★★★★";
+            let feedback = "Sempurna! Kamu Jenius Bahasa Inggris!";
+            let badgeIcon = "🏆";
+
+            if (totalScore >= 90) {
+                stars = "★★★★★";
+                feedback = "Awesome! Luar biasa, nilai kamu sangat tinggi!";
+                badgeIcon = "🥇";
+            } else if (totalScore >= 75) {
+                stars = "★★★★☆";
+                feedback = "Great Job! Hasil belajar yang sangat baik!";
+                badgeIcon = "🥈";
+            } else if (totalScore >= 60) {
+                stars = "★★★☆☆";
+                feedback = "Good Effort! Bagus, tingkatkan lagi belajarmu!";
+                badgeIcon = "🥉";
+            } else {
+                stars = "★★☆☆☆";
+                feedback = "Keep Practicing! Jangan menyerah, ayo baca materi lagi!";
+                badgeIcon = "📚";
+            }
+
+            document.getElementById('result-stars').textContent = stars;
+            document.getElementById('result-feedback-text').textContent = feedback;
+            document.getElementById('result-badge-icon').textContent = badgeIcon;
+
+            const resultData = {
+                name: studentProfile.name,
+                classNum: studentProfile.classNum,
+                score: totalScore,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+
+            saveRekapResult(resultData);
+            renderPembahasanList();
+        }
+
+        function restartQuiz() {
+            playSound('click');
+            document.getElementById('quiz-result-panel').classList.add('hidden');
+            document.getElementById('quiz-start-modal').classList.remove('hidden');
+        }
+
+        function togglePembahasanModal(show) {
+            playSound('click');
+            const modal = document.getElementById('modal-pembahasan');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function renderPembahasanList() {
+            const list = document.getElementById('pembahasan-content-list');
+            list.innerHTML = "";
+
+            quizQuestions.forEach((q, idx) => {
+                const uAns = userAnswers[q.id];
+                let isCorrect = false;
+
+                if (q.type === 'mc' || q.type === 'tf') {
+                    isCorrect = (uAns === q.answer);
+                } else if (q.type === 'short') {
+                    if (typeof uAns === 'string') {
+                        const clean = uAns.trim().toLowerCase();
+                        isCorrect = q.acceptAnswers.some(acc => acc.trim().toLowerCase() === clean);
+                    }
+                }
+
+                let displayUserAns = uAns;
+                if (q.type === 'mc') {
+                    displayUserAns = (uAns !== undefined) ? `${["A","B","C","D"][uAns]}. ${q.options[uAns]}` : "Tidak Dijawab";
+                } else if (q.type === 'tf') {
+                    displayUserAns = (uAns === true) ? "TRUE (Benar)" : (uAns === false ? "FALSE (Salah)" : "Tidak Dijawab");
+                } else if (!uAns) {
+                    displayUserAns = "Tidak Dijawab";
+                }
+
+                let displayKey = "";
+                if (q.type === 'mc') {
+                    displayKey = `${["A","B","C","D"][q.answer]}. ${q.options[q.answer]}`;
+                } else if (q.type === 'tf') {
+                    displayKey = q.answer ? "TRUE (Benar)" : "FALSE (Salah)";
+                } else {
+                    displayKey = q.acceptAnswers.join(" / ");
+                }
+
+                const item = document.createElement('div');
+                item.className = `p-3.5 rounded-2xl border-2 text-xs md:text-sm ${isCorrect ? 'bg-emerald-50/60 border-emerald-200' : 'bg-rose-50/60 border-rose-200'}`;
+                item.innerHTML = `
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}">Soal #${idx + 1} (${q.points} Poin)</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-rose-200 text-rose-800'}">
+                            ${isCorrect ? 'BENAR (+ ' + q.points + ')' : 'SALAH (+ 0)'}
+                        </span>
+                    </div>
+                    <p class="font-bold text-slate-800 mb-2">${q.question}</p>
+                    <div class="space-y-1 text-xs">
+                        <div class="text-slate-600">Jawaban Anda: <strong class="${isCorrect ? 'text-emerald-700' : 'text-rose-600'}">${displayUserAns}</strong></div>
+                        <div class="text-slate-600">Kunci Jawaban: <strong class="text-blue-700">${displayKey}</strong></div>
+                        <div class="mt-2 p-2 bg-white rounded-xl text-slate-500 text-[11px] border border-slate-100">
+                            <strong>Pembahasan:</strong> ${q.explain}
+                        </div>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Kode PIN Guru Rahasia: 456* (Murni di JavaScript)
+        const GURU_PIN = "456*";
+
+        function verifyGuruPIN(e) {
+            e.preventDefault();
+            playSound('click');
+            const pin = document.getElementById('guru-pin-input').value;
+
+            if (pin === GURU_PIN) {
+                document.getElementById('guru-login-card').classList.add('hidden');
+                document.getElementById('guru-dashboard-panel').classList.remove('hidden');
+                loadRekapTable();
+            } else {
+                playSound('wrong');
+                alert("Kode PIN Guru Salah! Akses ditolak.");
+                document.getElementById('guru-pin-input').value = "";
+            }
+        }
+
+        function saveRekapResult(data) {
+            let currentRekap = JSON.parse(localStorage.getItem('english_app_rekap') || "[]");
+            currentRekap.unshift(data);
+            localStorage.setItem('english_app_rekap', JSON.stringify(currentRekap));
+
+            if (cloudDatabaseUrl) {
+                fetch(cloudDatabaseUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                }).catch(err => console.log("Cloud sync error:", err));
+            }
+        }
+
+        function loadRekapTable() {
+            const rekap = JSON.parse(localStorage.getItem('english_app_rekap') || "[]");
+            const tbody = document.getElementById('guru-rekap-tbody');
+            tbody.innerHTML = "";
+
+            if (rekap.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada data ulangan siswa tersimpan.</td></tr>`;
+                updateGuruStats([]);
+                return;
+            }
+
+            rekap.forEach((row, i) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-400">${i + 1}</td>
+                    <td class="p-3 font-semibold text-slate-800">${row.name}</td>
+                    <td class="p-3 text-slate-600">${row.classNum}</td>
+                    <td class="p-3 text-center font-heading font-bold text-sm ${row.score >= 75 ? 'text-emerald-600' : 'text-amber-600'}">${row.score}</td>
+                    <td class="p-3 text-slate-400 text-[11px]">${row.timestamp}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateGuruStats(rekap);
+        }
+
+        function updateGuruStats(rekap) {
+            document.getElementById('stat-total-siswa').textContent = rekap.length;
+            if (rekap.length === 0) {
+                document.getElementById('stat-rata-nilai').textContent = 0;
+                document.getElementById('stat-max-nilai').textContent = 0;
+                document.getElementById('stat-min-nilai').textContent = 0;
+                return;
+            }
+
+            const scores = rekap.map(r => r.score);
+            const sum = scores.reduce((a, b) => a + b, 0);
+            const avg = (sum / scores.length).toFixed(1);
+            const max = Math.max(...scores);
+            const min = Math.min(...scores);
+
+            document.getElementById('stat-rata-nilai').textContent = avg;
+            document.getElementById('stat-max-nilai').textContent = max;
+            document.getElementById('stat-min-nilai').textContent = min;
+        }
+
+        function refreshCloudData() {
+            playSound('click');
+            loadRekapTable();
+            alert("Data rekapitulasi berhasil diperbarui!");
+        }
+
+        function clearAllRekap() {
+            playSound('click');
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data rekap nilai siswa?")) {
+                localStorage.removeItem('english_app_rekap');
+                loadRekapTable();
+            }
+        }
+
+        function exportToCSV() {
+            playSound('click');
+            const rekap = JSON.parse(localStorage.getItem('english_app_rekap') || "[]");
+            if (rekap.length === 0) {
+                alert("Tidak ada data untuk diekspor!");
+                return;
+            }
+
+            let csv = "No,Nama Siswa,Kelas/Absen,Nilai Akhir,Waktu Pengerjaan\n";
+            rekap.forEach((r, i) => {
+                csv += `"${i+1}","${r.name}","${r.classNum}","${r.score}","${r.timestamp}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekap_Nilai_Bahasa_Inggris_SD_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+
+        function openCloudConfigModal() {
+            playSound('click');
+            document.getElementById('cloud-url-input').value = cloudDatabaseUrl;
+            document.getElementById('modal-cloud-config').classList.remove('hidden');
+        }
+
+        function closeCloudConfigModal() {
+            playSound('click');
+            document.getElementById('modal-cloud-config').classList.add('hidden');
+        }
+
+        function saveCloudConfig() {
+            playSound('click');
+            const url = document.getElementById('cloud-url-input').value.trim();
+            cloudDatabaseUrl = url;
+            localStorage.setItem('english_app_cloud_url', url);
+            closeCloudConfigModal();
+            alert("URL Database Cloud berhasil disimpan!");
+        }
+    </script>
+</body>
+</html>
